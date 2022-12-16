@@ -77,7 +77,7 @@ def train_cofi(Y, R, num_features=10, LAMBDA=10.0, max_iter=100):
 	
 	X_raveled = np.hstack((X.ravel(), Theta.ravel())).T
 	
-	print "Minimizing cost function..."
+	print("Minimizing cost function...")
 	progress_counter = ProgressCounter(Y, R, num_users, num_items, num_features, LAMBDA, max_iter)
 	theta = fmin_cg(f=cofi_cost_function,
 					fprime=cofi_grad_function,
@@ -90,7 +90,7 @@ def train_cofi(Y, R, num_features=10, LAMBDA=10.0, max_iter=100):
 	X = theta[0:num_items*num_features].reshape(num_items, num_features)
 	Theta = theta[num_items*num_features:].reshape(num_users, num_features)
 	
-	print "Colaborative filtering recommender system training complete.\n"
+	print("Colaborative filtering recommender system training complete.\n")
 	return (X, Theta, progress_counter.cost_log)
 
 
@@ -187,7 +187,7 @@ with open(csv_file, "r") as fd:
 	for line in reader:
 		csv_data.append(line)
 
-csv_keys = csv_data[0].keys()
+csv_keys = list(csv_data[0].keys())
 throw_away = csv_keys.pop(csv_keys.index("Timestamp"))
 throw_away = csv_keys.pop(csv_keys.index("Username"))
 csv_keys = sorted(csv_keys)
@@ -209,7 +209,7 @@ for user in user_list:
 	lowest = min(user_data[user])
 	for i in range(1,6):
 		if user_data[user].count(i) != 1:
-			print user, i
+			print(user, i)
 			offenders.append(user)
 			break
 
@@ -221,7 +221,7 @@ for offender in offenders:
 	throw_away = user_list.pop(user_list.index(offender))
 
 if len(offenders) > 0:
-	print "Offenders:", offenders
+	print("Offenders:", offenders)
 
 
 #--- Create numeric rating matrix
@@ -273,7 +273,7 @@ while len(claimed_users) + num_winners <= Y.shape[1]:
 	final_teams = np.hstack((final_teams, this_round))
 
 #--- Clean up final teams
-final_teams = final_teams[:,1:].astype(np.int)
+final_teams = final_teams[:,1:].astype(int)
 final_teams = [list(x) for x in list(final_teams)]
 
 remaining_users = list(set(range(Y.shape[1])).difference(claimed_users))
@@ -301,7 +301,7 @@ print ""
 
 for i in range(num_winners):
 	team = winners[i]
-	print csv_keys[team]
+	print(csv_keys[team])
 	for member in final_teams[i]:
-		print user_list[member]
-	print ""
+		print(user_list[member])
+	print("")
